@@ -1,0 +1,55 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Sine Wave Start</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+</head>
+<body>
+	<style type="text/css">
+	#freq {
+		width:500px;
+		margin-bottom:40px;
+	}
+	
+	#volume{
+		width:500px;
+	}
+	</style>
+<input type="range" id="freq" min="15" max="22000" value="40"><br>
+<input type="range" id="volume" min="0" max="100" value="0">
+<p>This should make a sound.</p>
+<button type="button" id="Stop">Stop</button>
+
+<script type="text/javascript">
+var sine = new Object();
+sine.sineFreq = 40;
+sine.gain = 0;
+
+$('#freq').change(function(){
+	console.log($(this).val());
+	sine.sineFreq = $(this).val();
+    oscillator.start(0); // Start generating sound immediately
+    oscillator.frequency.value = sine.sineFreq;
+});
+
+$('#volume').change(function(){
+	console.log(($(this).val() / 100));
+	volumeNode.gain.value = $(this).val();
+
+});
+
+$('#Stop').click(function(){
+	oscillator.stop(0);
+})
+
+	var context = new webkitAudioContext(),
+	volumeNode = context.createGainNode();
+    oscillator = context.createOscillator();
+    oscillator.connect(volumeNode);
+    volumeNode.connect(context.destination);
+    oscillator.frequency.value = sine.sineFreq;
+    volumeNode.gain.value = (sine.gain / 100);
+
+	</script>
+</body>
+</html>
