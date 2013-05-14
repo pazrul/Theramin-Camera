@@ -14,13 +14,23 @@
 	#volume{
 		width:500px;
 	}
+	#volumetwo {
+		height:500px;
+		width:400px;
+		position:absolute;
+		left:500px;
+		top:200px;
+		background-color: blue;
+	}
 	</style>
 <input type="range" id="freq" min="15" max="22000" value="40"><br>
-<input type="range" id="volume" min="0" max="100" value="0">
+<input type="range" id="volumeRange" min="0" max="100" value="0">
 <p>This should make a sound.</p>
 <button type="button" id="Stop">Stop</button>
 
+<div id="volumetwo"></div>
 <script type="text/javascript">
+var volume2Pos = $('#volumetwo').position();
 var sine = new Object();
 sine.sineFreq = 40;
 sine.gain = 0;
@@ -37,7 +47,12 @@ $('#volume').change(function(){
 	volumeNode.gain.value = $(this).val();
 
 });
-
+$('#volumetwo').mouseenter(function(){
+	$(this).mousemove(function(e){
+		volumeNode.gain.value = ((e.pageY -  volume2Pos.top) / 500);
+//		console.log('test');
+	});
+})
 $('#Stop').click(function(){
 	oscillator.stop(0);
 })
